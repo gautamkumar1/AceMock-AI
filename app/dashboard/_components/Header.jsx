@@ -115,9 +115,6 @@ function Header() {
         <Link href={"/dashboard/upgrade"} className="font-bold hover:underline" prefetch={false}>
         Upgrade
         </Link>
-        <Link href="#" className="font-bold hover:underline" prefetch={false}>
-          Contact
-        </Link>
         <UserButton/>
       </nav>
       <Sheet>
@@ -137,9 +134,6 @@ function Header() {
             </Link>
             <Link href={"/dashboard/upgrade"} className="font-medium hover:underline hover:underline-offset-4" prefetch={false}>
             Upgrade
-            </Link>
-            <Link href="#" className="font-medium hover:underline hover:underline-offset-4" prefetch={false}>
-              Contact
             </Link>
             <UserButton/>
           </div>
