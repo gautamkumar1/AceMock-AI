@@ -23,8 +23,7 @@
 2. ⚙️ [Tech Stack](#tech-stack)
 3. 🤔 [How I Plan to Build This AI](#plan)
 4. 🔋 [Features](#features)
-5. 💥 [Important NPM Package](#npm)
-6. 🤸 [Quick Start](#quick-start)
+5. 🤸 [Quick Start](#quick-start)
 
 ## <a name="introduction">🤖 Introduction</a>
 
@@ -41,6 +40,7 @@ The AI provides real-time feedback, ratings, improved answers, and correct answe
 - Shadcn UI
 - Tailwind CSS
 - Drizzle ORM
+- Stripe
 - Google Gemini API
 <!-- Plan -->
 ## <a name="plan">🤔 How I Plan to Build This AI</a>
@@ -67,21 +67,23 @@ The AI provides real-time feedback, ratings, improved answers, and correct answe
 
 👉 **Authentication**: Implements authentication and authorization features using Clerk, allowing users to securely log in via social sign-on or traditional email and password methods, while ensuring appropriate access levels and permissions within the platform.
 
-👉 **New Meeting**: Quickly start a new meeting, configuring camera and microphone settings before joining.
+👉 **Question Generation**: Generate interview questions based on user-provided details such as job role, job description, tech stack, and experience.
 
-👉 **Meeting Controls**: Participants have full control over meeting aspects, including recording, emoji reactions, screen sharing, muting/unmuting, sound adjustments, grid layout, participant list view, and individual participant management (pinning, muting, unmuting, blocking, allowing video share).
+👉 **Interview Participation**: Users can turn on their webcam to participate in the mock interview, with the option to record their answers.
 
-👉 **Exit Meeting**: Participants can leave a meeting, or creators can end it for all attendees.
 
-👉 **Schedule Future Meetings**: Input meeting details (date, time) to schedule future meetings, accessible on the 'Upcoming Meetings' page for sharing the link or immediate start.
+👉 **Interview Control**: Users can move to the next question, return to the previous question, and end the interview at any time. After ending the interview, they are directly navigated to the feedback page.
 
-👉 **Past Meetings List**: Access a list of previously held meetings, including details and metadata.
 
-👉 **View Recorded Meetings**: Access recordings of past meetings for review or reference.
+👉 **Audio Format Questions**: Our AI automatically converts the questions into audio format so users can listen carefully and provide their answers.
 
-👉 **Personal Room**: Users have a personal room with a unique meeting link for instant meetings, shareable with others.
+👉 **Past Interview List**: Access a list of previously held interview, including details and metadata.
 
-👉 **Join Meetings via Link**: Easily join meetings created by others by providing a link.
+👉 **Real-Time Feedback**: AceMock AI provides real-time feedback to help users improve their answers, along with ratings for each question and correct answers.
+
+👉 **User Dashboard**: A user dashboard allows users to view their previous mock interviews and retake them if desired.
+
+👉 **Subscription and Payment**: After a one-time free trial, users must subscribe to a monthly or yearly plan, with an integrated payment system for seamless transactions.
 
 👉 **Secure Real-time Functionality**: All interactions within the platform are secure and occur in real-time, maintaining user privacy and data integrity.
 
@@ -103,8 +105,8 @@ Make sure you have the following installed on your machine:
 **Cloning the Repository**
 
 ```bash
-git clone https://github.com/gautamkumar1/G-Meet.git
-cd g-meet
+git clone https://github.com/gautamkumar1/AceMock-AI.git
+cd AceMock-AI
 ```
 
 **Installation**
@@ -120,22 +122,31 @@ npm install
 Create a new file named `.env` in the root of your project and add the following content:
 
 ```env
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-CLERK_SECRET_KEY=
-
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = 
+CLERK_SECRET_KEY = 
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-
-NEXT_PUBLIC_STREAM_API_KEY=
-STREAM_SECRET_KEY=
+NEXT_PUBLIC_DRIZZLE_DB_URL = 
+NEXT_PUBLIC_GEMINI_API_KEY =
+NEXT_PUBLIC_INFORMATION = 
 ```
 
-Replace the placeholder values with your actual Clerk & getstream credentials. You can obtain these credentials by signing up on the [Clerk website](https://clerk.com/) and [getstream website](https://getstream.io/)
+Replace the placeholder values with your actual Clerk & getstream credentials. You can obtain these credentials by signing up on the [Clerk website](https://clerk.com/).
 
 **Running the Project**
 
 ```bash
 npm run dev
 ```
+**Creating DB Schema**
 
+```bash
+npm run db:push
+```
+
+**Running the Drizzle ORM**
+
+```bash
+npm run db:studio
+```
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
