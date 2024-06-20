@@ -131,7 +131,7 @@ NEXT_PUBLIC_GEMINI_API_KEY =
 NEXT_PUBLIC_INFORMATION = 
 ```
 
-Replace the placeholder values with your actual Clerk & getstream credentials. You can obtain these credentials by signing up on the [Clerk website](https://clerk.com/).
+Replace the placeholder values with your actual Clerk credentials. You can obtain these credentials by signing up on the [Clerk website](https://clerk.com/).
 
 **Running the Project**
 
