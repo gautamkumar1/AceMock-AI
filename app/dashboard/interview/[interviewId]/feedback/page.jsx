@@ -28,7 +28,7 @@ function Feedback({params}) {
         .where(eq(UserAnswer.mockIdRef,params.interviewId))
         .orderBy(UserAnswer.id);
 
-        console.log(result);
+        // console.log(result);
         setFeedbackList(result);
     }
 

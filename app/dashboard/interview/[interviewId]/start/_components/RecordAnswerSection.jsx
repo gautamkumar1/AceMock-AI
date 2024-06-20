@@ -30,16 +30,16 @@ function RecordAnswerSection({mockInterviewQuestion, activeQuestionIndex, interv
     });
 
     useEffect(() => {
-        results?.map((result) => (
-            setUserAnswer(prevAns => prevAns + result?.transcript)
-        ))
+        if (results?.length > 0) {
+            setUserAnswer(prevAns => prevAns + results.map(result => result.transcript).join(' '));
+        }
     }, [results])
 
     useEffect(() => {
         if (!isRecording && userAnswer?.length > 10) {
             UpdateUserAnswer();
         }
-    }, [userAnswer])
+    }, [isRecording])
 
     const StartStopRecording = async () => {
         if (isRecording) {
@@ -48,21 +48,17 @@ function RecordAnswerSection({mockInterviewQuestion, activeQuestionIndex, interv
             startSpeechToText();
         }
     }
-    // Update the user answer
+
     const UpdateUserAnswer = async () => {
-        console.log(userAnswer)
+        // console.log("User Answer:", userAnswer)
         setLoading(true)
-        // This is the feedback Prompt
         const feedbackPrompt = `Question: ${mockInterviewQuestion[activeQuestionIndex]?.question}, User Answer: ${userAnswer}, Depends on question and user answer for give interview question please give us rating for answer and feedback as area of improvement if any in just 3 to 5 lines to improve it in JSON format with rating field and feedback field`;
-        // Sending the feedback prompt to the Gemini Model
-        const result = await chatSession.sendMessage(feedbackPrompt);
-        // Getting the JSON response from the Gemini Model
-        const mockJsonResp = (await result.response.text()).replace('```json', '').replace('```', '');
-        
+
         try {
-            // Parsing the JSON response
+            const result = await chatSession.sendMessage(feedbackPrompt);
+            const mockJsonResp = (await result.response.text()).replace('```json', '').replace('```', '');
             const JsonFeedbackResp = JSON.parse(mockJsonResp);
-            // Inserting the user answer to the database and also storing the feedback which we get the from AI
+
             const resp = await db.insert(UserAnswer)
                 .values({
                     mockIdRef: interviewData?.mockId,
@@ -73,16 +69,17 @@ function RecordAnswerSection({mockInterviewQuestion, activeQuestionIndex, interv
                     rating: JsonFeedbackResp?.rating,
                     userEmail: user?.primaryEmailAddress?.emailAddress,
                     createdAt: moment().format('DD-MM-yyyy')
-                })
-                // if the response is true ,then storing the user answer to the database otherwise throwing the error
+                });
+
             if (resp) {
                 toast('User Answer recorded successfully');
                 setUserAnswer('');
                 setResults([]);
+            } else {
+                throw new Error("Database insertion failed");
             }
-            setResults([]);
         } catch (error) {
-            console.error("Failed to parse JSON response:", error);
+            console.error("Failed to record user answer:", error);
             toast('Failed to record user answer');
         } finally {
             setLoading(false);
@@ -93,7 +90,6 @@ function RecordAnswerSection({mockInterviewQuestion, activeQuestionIndex, interv
         <div className='flex items-center justify-center flex-col'>
             <div className='flex flex-col mt-20 justify-center items-center bg-black rounded-lg p-5'>
                 <Image src={'/webcam.png'} width={200} height={200} className='absolute' />
-                {/* Seting the Web Cam */}
                 <Webcam
                     mirrored={true}
                     style={{
@@ -103,7 +99,6 @@ function RecordAnswerSection({mockInterviewQuestion, activeQuestionIndex, interv
                     }}
                 />
             </div>
-            {/* Buttons for Stop and Start Recording Based On the Condition */}
             <Button
                 disabled={loading}
                 variant="outline" className="my-10"

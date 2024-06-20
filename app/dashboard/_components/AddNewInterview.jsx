@@ -34,14 +34,14 @@ function AddNewInterview() {
     const onSubmit=async(e)=>{
         setLoading(true)
         e.preventDefault()
-        console.log(jobPosition,jobDesc,jobExperience);
+        // console.log(jobPosition,jobDesc,jobExperience);
         // Prompts to the gemini modal
         const InputPrompt="Job position: "+jobPosition+", Job Description: "+jobDesc+", Years of Experience : "+jobExperience+" , Depends on Job Position, Job Description & Years of Experience give us "+process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT+" Interview question along with Answer in JSON format, Give us question and answer field on JSON"
         // send the prompt to the gemini modal
         const result=await chatSession.sendMessage(InputPrompt);
         // store the mock response
-        const MockJsonResp=(result.response.text()).replace('```json','').replace('```','')
-        console.log(JSON.parse(MockJsonResp));
+        const MockJsonResp=(await result.response.text()).replace('```json','').replace('```','')
+        // console.log(JSON.parse(MockJsonResp));
         setJsonResponse(MockJsonResp);
         // check if the mock response is found then save to the database
         if(MockJsonResp)
@@ -58,7 +58,7 @@ function AddNewInterview() {
             createdAt:moment().format('DD-MM-yyyy')
         }).returning({mockId:MockInterview.mockId});
 
-        console.log("Inserted ID:",resp)
+        // console.log("Inserted ID:",resp)
         // if the response is get then add new interview from dialog set as false and navigate to the interview page
         if(resp)
         {
